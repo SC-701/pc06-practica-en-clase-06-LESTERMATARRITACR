@@ -62,7 +62,7 @@ jobs:
           dotnet restore "DA/DA.csproj"
           dotnet restore "Flujo/Flujo.csproj"
           dotnet restore "Reglas/Reglas.csproj"
-          dotnet restore "Servicios/Servicios.csprojoj"
+          dotnet restore "Servicios/Servicios.csproj"
           dotnet restore "API/API.csproj"
 
       - name: Build with dotnet (excluding BD project)
