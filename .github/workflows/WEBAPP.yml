@@ -7,34 +7,26 @@
 # 3. Update the AZURE_WEBAPP_NAME below with your actual Web App name
 #
 # Generated automatically by PowerShell script on 07/09/2025 22:17:01
-
 name: Build and deploy Web App
-
 env:
   AZURE_WEBAPP_NAME: Weblest    # Change this to your Azure Web App name
-  AZURE_WEBAPP_PACKAGE_PATH: 'Vehiculos.WEB/Web'
+  AZURE_WEBAPP_PACKAGE_PATH: 'Vehiculo.WEB/Web'
   DOTNET_VERSION: '8.0'
-
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-
       - name: Set up dependency caching for faster builds
         uses: actions/cache@v3
         with:
@@ -42,28 +34,22 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-
       - name: Restore dependencies
-        run: dotnet restore "Vehiculos.WEB/Vehiculos.WEB.sln"
-
+        run: dotnet restore "Vehiculo.WEB/Web/Vehiculo_Web.sln"
       - name: Build with dotnet
         run: |
-          dotnet build "Vehiculos.WEB/Abstracciones/Abstracciones.csproj" --configuration Release --no-restore
-          dotnet build "Vehiculos.WEB/Web/Web.csproj" --configuration Release --no-restore
-          dotnet build "Vehiculos.WEB/Reglas/Reglas.csproj" --configuration Release --no-restore
-
+          dotnet build "Vehiculo.WEB/Abstracciones/Abstracciones.csproj" --configuration Release --no-restore
+          dotnet build "Vehiculo.WEB/Web/Web.csproj" --configuration Release --no-restore
+          dotnet build "Vehiculo.WEB/Reglas/Reglas.csproj" --configuration Release --no-restore
       - name: Run tests
-        run: dotnet test "Vehiculos.WEB/Vehiculos.WEB.sln" --no-restore --verbosity normal --configuration Release || echo "No tests found or test execution failed"
-
+        run: dotnet test "Vehiculo.WEB/Web/Vehiculo_Web.sln" --no-restore --verbosity normal --configuration Release || echo "No tests found or test execution failed"
       - name: dotnet publish
-        run: dotnet publish "Vehiculos.WEB/Web/Web.csproj" -c Release -o ./publish --no-restore
-
+        run: dotnet publish "Vehiculo.WEB/Web/Web.csproj" -c Release -o ./publish --no-restore
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
           path: ./publish
-
   deploy:
     permissions:
       contents: none
@@ -72,13 +58,11 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-5url }}
-
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
