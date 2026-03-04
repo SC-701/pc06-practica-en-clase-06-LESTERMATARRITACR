@@ -2,14 +2,10 @@
 using Abstracciones.Interfaces.Servicios;
 using Abstracciones.Modelos.Servicios.Revision;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reglas
 {
-    public class RevisionReglas: IRevisionReglas
+    public class RevisionReglas : IRevisionReglas
     {
         private readonly IRevisionServicio _RevisionServicio;
         private readonly IConfiguracion _configuracion;
@@ -23,15 +19,35 @@ namespace Reglas
         public async Task<bool> RevisionEsValida(string placa)
         {
             var resultadoRevision = await _RevisionServicio.Obtener(placa);
-            if (ValidarEstado(resultadoRevision)&&ValidarPeriodo
-                (resultadoRevision.Periodo))
-                    return true;
-            return false;
+
+            if (resultadoRevision == null)
+                return false;
+
+            if (!ValidarEstado(resultadoRevision))
+                return false;
+
+            if (resultadoRevision.Periodo == null)
+                return false;
+
+            if (!ValidarPeriodo(resultadoRevision.Periodo))
+                return false;
+
+            return true;
         }
 
         private bool ValidarEstado(Revision resultadoRevision)
         {
+            if (resultadoRevision == null)
+                return false;
+
+            if (resultadoRevision.Resultado == null)
+                return false;
+
             string estadoRevision = _configuracion.ObtenerValor("EstadoRevisionSastifactoria");
+
+            if (estadoRevision == null)
+                return false;
+
             return resultadoRevision.Resultado == estadoRevision;
         }
 
@@ -39,8 +55,12 @@ namespace Reglas
         {
             return $"{DateTime.Now.Month}-{DateTime.Now.Year}";
         }
+
         private static bool ValidarPeriodo(string periodo)
         {
+            if (periodo == null)
+                return false;
+
             var periodoActual = ObtenerPeriodoActual();
             return periodo == periodoActual;
         }

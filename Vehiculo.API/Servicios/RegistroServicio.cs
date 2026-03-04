@@ -1,13 +1,10 @@
-﻿
-using Abstracciones.Interfaces.Reglas;
+﻿using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Interfaces.Servicios;
 using Abstracciones.Modelos.Servicios.Registro;
-using System.Net.Http;
 using System.Text.Json;
 
 namespace Servicios
 {
-    
     public class RegistroServicio : IRegistroServicio
     {
         private readonly IConfiguracion _configuracion;
@@ -19,22 +16,25 @@ namespace Servicios
             _httpClient = httpClient;
         }
 
-        public async Task<Propietario> Obtener(string placa)
+        public async Task<Propietario?> Obtener(string placa)
         {
-            var endPoint= _configuracion.ObtenerMetodo("ApiEndPintsRegistro", "ObtenerRegistro");
+            var endPoint = _configuracion.ObtenerMetodo("ApiEndPointsRegistro", "ObtenerRegistro");
 
-            var servicioRegistro = _httpClient.CreateClient("ServicioRegistro"  );
-            var respuesta = await servicioRegistro.GetAsync(string.Format(endPoint,placa));
-            respuesta.EnsureSuccessStatusCode();
+            var servicioRegistro = _httpClient.CreateClient("ServicioRegistro");
+            var respuesta = await servicioRegistro.GetAsync(string.Format(endPoint, placa));
+
+            if (!respuesta.IsSuccessStatusCode)
+                return null;
+
             var resultado = await respuesta.Content.ReadAsStringAsync();
+
             var opciones = new JsonSerializerOptions
             {
-               PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true
             };
-            var resultadoDeserializado =
-                JsonSerializer.Deserialize<List<Propietario>>(resultado, opciones);
-            return resultadoDeserializado.FirstOrDefault();
+
+            var lista = JsonSerializer.Deserialize<List<Propietario>>(resultado, opciones);
+            return lista?.FirstOrDefault();
         }
     }
 }
- 
