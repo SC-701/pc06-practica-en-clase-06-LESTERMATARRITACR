@@ -35,14 +35,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
       - name: Restore dependencies
-        run: dotnet restore "Vehiculo.WEB/Web/Vehiculo_Web.sln"
+        run: dotnet restore "Vehiculo.WEB/Vehiculo.Web.sln"
       - name: Build with dotnet
         run: |
           dotnet build "Vehiculo.WEB/Abstracciones/Abstracciones.csproj" --configuration Release --no-restore
           dotnet build "Vehiculo.WEB/Web/Web.csproj" --configuration Release --no-restore
           dotnet build "Vehiculo.WEB/Reglas/Reglas.csproj" --configuration Release --no-restore
       - name: Run tests
-        run: dotnet test "Vehiculo.WEB/Web/Vehiculo_Web.sln" --no-restore --verbosity normal --configuration Release || echo "No tests found or test execution failed"
+        run: dotnet test "Vehiculo.WEB/Vehiculo.Web.sln" --no-restore --verbosity normal --configuration Release || echo "No tests found or test execution failed"
       - name: dotnet publish
         run: dotnet publish "Vehiculo.WEB/Web/Web.csproj" -c Release -o ./publish --no-restore
       - name: Upload artifact for deployment job
