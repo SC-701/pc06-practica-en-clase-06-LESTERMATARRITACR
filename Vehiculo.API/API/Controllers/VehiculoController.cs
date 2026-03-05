@@ -27,7 +27,7 @@ namespace API.Controllers
         [HttpPut("{Id}")]
         public async Task<IActionResult> Editar([FromRoute] Guid Id, [FromBody] VehiculoRequest vehiculo)
         {
-          if(   await VerificarVehiculoExiste(Id));
+          if(!await VerificarVehiculoExiste(Id));
             return NotFound("El vehiculo no existe");
             var resultado = await _vehiculoFlujo.Editar(Id, vehiculo);
             return Ok(resultado);
@@ -35,7 +35,7 @@ namespace API.Controllers
         [HttpDelete("{Id}")]
         public async Task<IActionResult> Eliminar([FromBody] Guid Id)
         {
-            if (await VerificarVehiculoExiste(Id)) ;
+            if (!await VerificarVehiculoExiste(Id)) ;
             return NotFound("El vehiculo no existe");
             var resultado = await _vehiculoFlujo.Eliminar(Id);
             return NoContent();
