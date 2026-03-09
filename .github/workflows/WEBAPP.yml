@@ -35,7 +35,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
       - name: Restore dependencies
-        run: dotnet restore "Vehiculo.WEB/Vehiculo.Web.sln"
+        run: dotnet restore "Vehiculos.WEB/Vehiculos.WEB.sln"
       - name: Build with dotnet
         run: |
           dotnet build "Vehiculo.WEB/Abstracciones/Abstracciones.csproj" --configuration Release --no-restore
