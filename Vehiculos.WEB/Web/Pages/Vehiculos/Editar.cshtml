@@ -18,6 +18,7 @@
 
         <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto ">
             <form method="post">
+
                 <div class="form-group">
                     <label for="marcas">Marca</label>
                     <select asp-for="marcaSeleccionada" class="form-select" asp-items="Model.marcas" id="marcas" onchange="fetchModelos()">
@@ -25,12 +26,14 @@
                     </select>
                     <span class="text-danger" asp-validation-for="vehiculo.Marca"></span>
                 </div>
+
                 <div class="form-group">
-                    <label for="modelos">Modelo</label>
+                    <label for="marcas">Modelo</label>
                     <select asp-for="modeloSeleccionado" class="form-select" asp-items="Model.modelos" id="modelos">
                         <option value="">Seleccione un modelo</option>
                     </select>
-                    <span class="text-danger" asp-validation-for="vehiculo.Modelo"></span>
+
+                   
                 </div>
                 <div class="form-group">
                     <label class="control-label" asp-for="vehiculo.Placa"></label>
@@ -76,7 +79,7 @@
 </section>
 
 @section Scripts {
-    <script>async function fetchModelos() {
+    <script>async function fetchModelos(){
             const marcaId = document.getElementById('marcas').value;
             if (!marcaId) {
                 return;
