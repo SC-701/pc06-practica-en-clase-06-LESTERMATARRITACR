@@ -54,7 +54,12 @@ namespace Web.Pages.Vehiculos
                             Text = a.Nombre.ToString(),
                             Selected = a.Nombre == vehiculo.Modelo
                         }).ToList();
-                    modeloSeleccionado = Guid.Parse(modelos.Where(m => m.Text == vehiculo.Modelo).FirstOrDefault().Value);
+                    var modelo = modelos.FirstOrDefault(m => m.Text == vehiculo.Modelo);
+
+                    if (modelo != null)
+                    {
+                        modeloSeleccionado = Guid.Parse(modelo.Value);
+                    }
                 }
 
             }

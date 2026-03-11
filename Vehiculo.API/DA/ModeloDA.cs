@@ -20,8 +20,9 @@ namespace DA
         {
             string query = @"ObtenerModelos";
             var resultadoConsulta = await _sqlConnection.QueryAsync<Modelo>(query,
-                new { idMarca = IdMarca });
-
+                new { IdMarca = IdMarca },
+        commandType: System.Data.CommandType.StoredProcedure
+    );
             return resultadoConsulta;
         }
     }
