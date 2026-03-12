@@ -20,7 +20,7 @@ namespace Web.Pages.Vehiculos
         [BindProperty]
         public VehiculoResponse vehiculo { get; set; } = default!;
 
-        [BindProperty]
+       
         public VehiculoRequest vehiculoRequest { get; set; } = default!;
 
         [BindProperty]
