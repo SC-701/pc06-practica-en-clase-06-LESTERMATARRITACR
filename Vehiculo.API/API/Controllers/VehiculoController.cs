@@ -33,7 +33,7 @@ namespace API.Controllers
             return Ok(resultado);
         }
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> Eliminar([FromBody] Guid Id)
+        public async Task<IActionResult> Eliminar([FromRoute] Guid Id)
         {
             if (!await VerificarVehiculoExiste(Id)) 
             return NotFound("El vehiculo no existe");
