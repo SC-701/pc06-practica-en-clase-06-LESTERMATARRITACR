@@ -12,19 +12,22 @@ namespace Web.Pages.Vehiculos
     public class EliminarModel : PageModel
     {
         private IConfiguracion _configuracion;
-        [BindProperty]
-        public VehiculoResponse vehiculo { get; set; } = default!;
+
+        
+
         public EliminarModel(IConfiguracion configuracion)
         {
             _configuracion = configuracion;
         }
+
+        public VehiculoResponse vehiculo { get; set; } = default!;
         public async Task<ActionResult> OnGet(Guid? id)
         {
-            if (id==null)
+            if (id== Guid.Empty)
                 return NotFound();
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPoints", "ObtenerVehiculo");
             var cliente = new HttpClient();
-            
+ 
             var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, id));
             var respuesta = await cliente.SendAsync(solicitud);
             respuesta.EnsureSuccessStatusCode();
@@ -36,6 +39,9 @@ namespace Web.Pages.Vehiculos
             }
             return Page();
         }
+
+
+
         public async Task<ActionResult> OnPost(Guid? id)
         {
             if (id == Guid.Empty)
