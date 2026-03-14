@@ -20,7 +20,6 @@ namespace Web.Pages.Vehiculos
         [BindProperty]
         public VehiculoResponse vehiculo { get; set; } = default!;
 
-       
         public VehiculoRequest vehiculoRequest { get; set; } = default!;
 
         [BindProperty]
@@ -85,6 +84,7 @@ namespace Web.Pages.Vehiculos
             if (vehiculo.Id == Guid.Empty)
                 return NotFound();
 
+
             if (!ModelState.IsValid)
             {
                 await ObtenerMarcasAsync();
@@ -102,7 +102,7 @@ namespace Web.Pages.Vehiculos
 
                 return Page();
             }
-
+       
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPoints", "EditarVehiculo");
 
             var cliente = new HttpClient();
